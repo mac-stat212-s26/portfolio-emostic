@@ -47,7 +47,7 @@ portfolio
 First load required packages.
 
 ```{r setup}
-loadNamespace("USAboundariesData")
+loadNamespace("USAboundaries")
 #Install these packages first
 
 # install.packages(c("sf","elevatr","terra","stars","tidycensus"))
@@ -95,8 +95,8 @@ See [Spatial Data Appendix](https://hash-mac.github.io/stat212site-sp26/notes/sp
 nc <- st_read(system.file("shape/nc.shp", package = "sf"))
 
 # Read in shapefiles just downloaded
-mn_cities <- st_read("Add correct relative path to city_and_township_population_centers.shp")
-mn_water <- st_read("Add correct relative path to LakesAndRivers.shp")
+mn_cities <- st_read("../data/shp_loc_pop_centers/city_and_township_population_centers")
+mn_water <- st_read("../data/shp_water_lakes_rivers/LakesAndRivers")
 ```
 
 The `sf` package reads in spatial data in `data.frame`-like format. Using the `class()` function we can check the **class** (type) of object that we just read in. Note the presence of the "sf" and "data.frame" classes:
