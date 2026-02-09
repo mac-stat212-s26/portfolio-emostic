@@ -3,3 +3,77 @@ title: "HW02"
 format: html
 ---
 
+## Research Question
+
+**Which types of edible plants grow best at higher temperatures?**
+
+## Background and Data Story
+
+Edible plants have different growing requirements, especially when it comes to temperature. Understanding which types of plants prefer warmer growing conditions can help gardeners and growers make better decisions about what to plant and when. Using data from the Edible Plant Database, this visualization compares the optimal growing temperatures of edible plants across different cultivation classes. Each point represents an individual plant, while the boxplots summarize the overall temperature distribution within each group. The plot shows that cucurbits generally grow best at higher temperatures, while brassicas and legumes tend to prefer cooler growing conditions. This highlights how temperature needs vary clearly by plant type.
+
+```{r}
+library(tidyverse)
+
+# Load data
+edible_plants <- readr::read_csv(
+  "https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2026/2026-02-03/edible_plants.csv",
+  show_col_types = FALSE
+)
+
+# Helper: turn "24-32" or "18-" or "26" into ONE numeric value (mean of numbers found)
+parse_temp <- function(x) {
+  nums <- stringr::str_extract_all(x, "\\d+\\.?\\d*")[[1]]
+  if (length(nums) == 0) return(NA_real_)
+  mean(as.numeric(nums))
+}
+
+plot_data <- edible_plants %>%
+  transmute(
+    common_name,
+    cultivation = str_to_title(cultivation),
+    temperature_growing_raw = temperature_growing
+  ) %>%
+  mutate(
+    temperature_growing = map_dbl(temperature_growing_raw, parse_temp)
+  ) %>%
+  filter(!is.na(cultivation), !is.na(temperature_growing)) %>%
+  # keep only cultivation groups with enough plants (so the plot looks clean)
+  add_count(cultivation, name = "n_group") %>%
+  filter(n_group >= 5) %>%
+  # order groups by median temperature (nice story + nice plot)
+  mutate(
+    cultivation = fct_reorder(cultivation, temperature_growing, .fun = median)
+  )
+
+# Pastel palette (auto-scales to number of groups)
+cult_levels <- levels(plot_data$cultivation)
+pastels <- c(
+  "#C7DADB", "#B6CDE3", "#F2C6B4", "#E9A6A6", "#CDE7D8",
+  "#E6D6F2", "#F6E7B2", "#D8E6FF", "#F9D5E5", "#D4F0F0",
+  "#E8D7C5", "#DDE7C7"
+)
+pal <- setNames(pastels[seq_along(cult_levels)], cult_levels)
+
+ggplot(plot_data, aes(x = cultivation, y = temperature_growing, color = cultivation)) +
+  geom_boxplot(width = 0.55, outlier.shape = NA, linewidth = 0.7, alpha = 0.25) +
+  geom_jitter(width = 0.18, alpha = 0.55, size = 2) +
+  scale_color_manual(values = pal) +
+  labs(
+    title = "Which types of edible plants grow best at higher temperatures?",
+    subtitle = "Optimal growing temperature by cultivation class (ranges summarized by their average)",
+    x = NULL,
+    y = "Optimal growing temperature (°C)",
+    caption = "Source: Edible Plant Database (GROW Observatory) • TidyTuesday 2026-02-03"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(face = "bold", size = 18),
+    plot.subtitle = element_text(color = "grey40", size = 12),
+    axis.text.x = element_text(color = "grey30", angle = 25, hjust = 1),
+    axis.text.y = element_text(color = "grey30"),
+    panel.grid.minor = element_blank()
+  )
+
+```
+
