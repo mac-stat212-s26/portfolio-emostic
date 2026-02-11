@@ -43,6 +43,28 @@
     ]
   },
   {
+    "objectID": "hw/HW02.html",
+    "href": "hw/HW02.html",
+    "title": "HW02",
+    "section": "",
+    "text": "Research Question\nWhich types of edible plants grow best at higher temperatures?",
+    "crumbs": [
+      "TidyTuesday",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>HW02</span>"
+    ]
+  },
+  {
+    "objectID": "hw/HW02.html#background-and-data-story",
+    "href": "hw/HW02.html#background-and-data-story",
+    "title": "HW02",
+    "section": "Background and Data Story",
+    "text": "Background and Data Story\nEdible plants have different growing requirements, especially when it comes to temperature. Understanding which types of plants prefer warmer growing conditions can help gardeners and growers make better decisions about what to plant and when. Using data from the Edible Plant Database, this visualization compares the optimal growing temperatures of edible plants across different cultivation classes. Each point represents an individual plant, while the boxplots summarize the overall temperature distribution within each group. The plot shows that cucurbits generally grow best at higher temperatures, while brassicas and legumes tend to prefer cooler growing conditions. This highlights how temperature needs vary clearly by plant type.\n\nCodelibrary(tidyverse)\n\n# Load data\nedible_plants &lt;- readr::read_csv(\n  \"https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2026/2026-02-03/edible_plants.csv\",\n  show_col_types = FALSE\n)\n\n# Helper: turn \"24-32\" or \"18-\" or \"26\" into ONE numeric value (mean of numbers found)\nparse_temp &lt;- function(x) {\n  nums &lt;- stringr::str_extract_all(x, \"\\\\d+\\\\.?\\\\d*\")[[1]]\n  if (length(nums) == 0) return(NA_real_)\n  mean(as.numeric(nums))\n}\n\nplot_data &lt;- edible_plants %&gt;%\n  transmute(\n    common_name,\n    cultivation = str_to_title(cultivation),\n    temperature_growing_raw = temperature_growing\n  ) %&gt;%\n  mutate(\n    temperature_growing = map_dbl(temperature_growing_raw, parse_temp)\n  ) %&gt;%\n  filter(!is.na(cultivation), !is.na(temperature_growing)) %&gt;%\n  # keep only cultivation groups with enough plants (so the plot looks clean)\n  add_count(cultivation, name = \"n_group\") %&gt;%\n  filter(n_group &gt;= 5) %&gt;%\n  # order groups by median temperature (nice story + nice plot)\n  mutate(\n    cultivation = fct_reorder(cultivation, temperature_growing, .fun = median)\n  )\n\n# Pastel palette (auto-scales to number of groups)\ncult_levels &lt;- levels(plot_data$cultivation)\npastels &lt;- c(\n  \"#C7DADB\", \"#B6CDE3\", \"#F2C6B4\", \"#E9A6A6\", \"#CDE7D8\",\n  \"#E6D6F2\", \"#F6E7B2\", \"#D8E6FF\", \"#F9D5E5\", \"#D4F0F0\",\n  \"#E8D7C5\", \"#DDE7C7\"\n)\npal &lt;- setNames(pastels[seq_along(cult_levels)], cult_levels)\n\nggplot(plot_data, aes(x = cultivation, y = temperature_growing, color = cultivation)) +\n  geom_boxplot(width = 0.55, outlier.shape = NA, linewidth = 0.7, alpha = 0.25) +\n  geom_jitter(width = 0.18, alpha = 0.55, size = 2) +\n  scale_color_manual(values = pal) +\n  labs(\n    title = \"Which types of edible plants grow best at higher temperatures?\",\n    subtitle = \"Optimal growing temperature by cultivation class (ranges summarized by their average)\",\n    x = NULL,\n    y = \"Optimal growing temperature (°C)\",\n    caption = \"Source: Edible Plant Database (GROW Observatory) • TidyTuesday 2026-02-03\"\n  ) +\n  theme_minimal(base_size = 14) +\n  theme(\n    legend.position = \"none\",\n    plot.title = element_text(face = \"bold\", size = 18),\n    plot.subtitle = element_text(color = \"grey40\", size = 12),\n    axis.text.x = element_text(color = \"grey30\", angle = 25, hjust = 1),\n    axis.text.y = element_text(color = \"grey30\"),\n    panel.grid.minor = element_blank()\n  )",
+    "crumbs": [
+      "TidyTuesday",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>HW02</span>"
+    ]
+  },
+  {
     "objectID": "pcl/pcl.html",
     "href": "pcl/pcl.html",
     "title": "Pre-Class Learning Summaries",
