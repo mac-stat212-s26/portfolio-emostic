@@ -21,25 +21,25 @@
     ]
   },
   {
-    "objectID": "tt/2025-07-08.html",
-    "href": "tt/2025-07-08.html",
-    "title": "TidyTuesday Sample 1",
+    "objectID": "hw/HW01.html",
+    "href": "hw/HW01.html",
+    "title": "HW01",
     "section": "",
-    "text": "Add content here",
+    "text": "Research Question\nWhich kinds of Brazilian companies hold the most capital stock (and is it concentrated in a few categories)?",
     "crumbs": [
       "TidyTuesday",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>TidyTuesday Sample 1</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>HW01</span>"
     ]
   },
   {
-    "objectID": "tt/2025-07-15.html",
-    "href": "tt/2025-07-15.html",
-    "title": "TidyTuesday Sample 2",
-    "section": "",
-    "text": "Add content here",
+    "objectID": "hw/HW01.html#background-and-data-story",
+    "href": "hw/HW01.html#background-and-data-story",
+    "title": "HW01",
+    "section": "Background and Data Story",
+    "text": "Background and Data Story\nBrazil’s CNPJ registry includes information about companies’ legal structure (legal nature), company size, and declared share capital (capital stock, in BRL). Capital stock is usually very skewed, meaning a small number of firms or categories can hold a huge share of total capital. In this short data story, I use the cleaned TidyTuesday dataset (filtered to companies above a capital-stock threshold) to compare total capital across groups and see where capital appears most concentrated. The visualization summarizes both the overall scale (total capital) and the distribution (how uneven it is within each group), helping us see which categories dominate and whether that dominance comes from many firms or a small “top tail.”\n\nCodelibrary(tidyverse)\nlibrary(scales)\n\n# Load data (TidyTuesday 2026-01-27)\ncompanies &lt;- readr::read_csv(\n  \"https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2026/2026-01-27/companies.csv\",\n  show_col_types = FALSE\n)\n\n# Clean + keep what we need\nplot_data &lt;- companies %&gt;%\n  filter(!is.na(company_size), !is.na(capital_stock), capital_stock &gt; 0) %&gt;%\n  mutate(\n    company_size = str_to_title(company_size),\n    company_size = fct_relevel(company_size, \"Micro-Enterprise\", \"Small-Enterprise\", after = 0)\n  )\n\n# Summarize total capital by size (top-to-bottom)\nsum_size &lt;- plot_data %&gt;%\n  group_by(company_size) %&gt;%\n  summarise(\n    n = n(),\n    total_capital = sum(capital_stock, na.rm = TRUE),\n    median_capital = median(capital_stock, na.rm = TRUE),\n    .groups = \"drop\"\n  ) %&gt;%\n  arrange(desc(total_capital)) %&gt;%\n  mutate(company_size = fct_reorder(company_size, total_capital))\n\n# Pastel palette\npastel &lt;- c(\n  \"#B6CDE3\", \"#E9A6A6\", \"#CDE7D8\", \"#E6D6F2\", \"#F6E7B2\",\n  \"#D4F0F0\", \"#F9D5E5\", \"#E8D7C5\"\n)\npal &lt;- setNames(pastel[seq_len(nlevels(sum_size$company_size))], levels(sum_size$company_size))\n\n# Plot: Total capital by company size (pastel bars) + labels\nggplot(sum_size, aes(x = company_size, y = total_capital, fill = company_size)) +\n  geom_col(width = 0.62, alpha = 0.85) +\n  geom_text(\n    aes(label = comma(total_capital / 1e9, accuracy = 0.1)),\n    vjust = -0.4,\n    size = 4,\n    fontface = \"bold\"\n  ) +\n  scale_fill_manual(values = pal) +\n  scale_y_continuous(\n    labels = function(x) paste0(comma(x / 1e9), \"B\"),\n    expand = expansion(mult = c(0, 0.12))\n  ) +\n  labs(\n    title = \"Which company sizes hold the most capital stock in Brazil?\",\n    subtitle = \"Total declared capital stock (BRL), summed within each company-size group\",\n    x = NULL,\n    y = \"Total capital stock (BRL, billions)\",\n    caption = \"Source: Brazil CNPJ (Receita Federal) • TidyTuesday 2026-01-27\"\n  ) +\n  theme_minimal(base_size = 14) +\n  theme(\n    legend.position = \"none\",\n    plot.title = element_text(face = \"bold\", size = 18),\n    plot.subtitle = element_text(color = \"grey40\", size = 12),\n    axis.text.x = element_text(color = \"grey30\"),\n    axis.text.y = element_text(color = \"grey30\"),\n    panel.grid.minor = element_blank()\n  )",
     "crumbs": [
       "TidyTuesday",
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>TidyTuesday Sample 2</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>HW01</span>"
     ]
   },
   {
