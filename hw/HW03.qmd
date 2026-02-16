@@ -1,0 +1,54 @@
+---
+title: "HW03"
+format: html
+---
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+schedule <- readr::read_csv(
+  "https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2026/2026-02-10/schedule.csv",
+  show_col_types = FALSE
+)
+```
+
+# Research Question:
+# Which Winter Olympic sport disciplines have the most scheduled events?
+
+```{r}
+events_by_sport <- schedule |>
+  count(discipline_name, name = "total_events") |>
+  arrange(desc(total_events))
+```
+
+```{r}
+ggplot(
+  events_by_sport,
+  aes(
+    x = reorder(discipline_name, total_events),
+    y = total_events,
+    fill = total_events
+  )
+) +
+  geom_col() +
+  coord_flip() +
+  scale_fill_viridis_c(
+    option = "viridis",
+    name = "Number of events"
+  ) +
+  labs(
+    title = "Winter Olympics 2026: Events by Sport",
+    subtitle = "Total scheduled events per discipline",
+    x = "Sport discipline",
+    y = "Total events",
+    caption = "Source: TidyTuesday (2026-02-10)"
+  ) +
+  theme_classic(base_size = 12) +
+  theme(
+    legend.position = "right",
+    plot.title = element_text(face = "bold")
+  )
+```
+# Curling has by far the highest number of scheduled events at the 2026 Winter Olympics, while newer or more specialized sports such as ski mountaineering have far fewer events. This suggests that team-based and multi-session sports require substantially more scheduled time than individual or emerging disciplines. Overall, the distribution of events is highly uneven across sports, reflecting differences in competition formats rather than differences in importance.
