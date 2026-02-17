@@ -66,8 +66,9 @@ book:
 
     - part: "TidyTuesday"
       chapters:
-      - tt/2025-07-08.qmd
-      - tt/2025-07-15.qmd
+      - hw/HW01.qmd
+      - hw/HW02.qmd
+      - hw/HW03.qmd
 
     - part: "Pre-Class Learnings"
       chapters:
