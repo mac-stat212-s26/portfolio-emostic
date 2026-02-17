@@ -68,6 +68,7 @@ book:
       chapters:
       - hw/HW01.qmd
       - hw/HW02.qmd
+      - hw/HW03.qmd
 
     - part: "Pre-Class Learnings"
       chapters:
