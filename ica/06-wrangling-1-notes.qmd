@@ -231,15 +231,28 @@ Using `tidyverse` functions, complete the following:
 
 
 ```{r}
-#1
+# 1
+diamonds |> filter(price < 400 | price > 10000)
 
-#2
+# 2
+diamonds |> filter(price >= 500 & price <= 600)
 
-#3
+# 3 - wrong way with ==
+diamonds |> filter(cut == c("Fair", "Premium", "Ideal")) # recycling warning!
 
-#4
+# 3 - correct way
+diamonds |> filter(cut %in% c("Fair", "Premium", "Ideal")) |> summarize(n = n())
+diamonds |> summarize(
+  count = sum(cut %in% c("Fair", "Premium", "Ideal")),
+  fraction = mean(cut %in% c("Fair", "Premium", "Ideal"))
+)
 
-#5
+# 4
+any(diamonds$cut == "Fair" & diamonds$price > 3000)
+all(diamonds$cut == "Ideal" & diamonds$price > 2000)
+
+# 5
+
 
 ```
 
@@ -520,6 +533,10 @@ gss_cat |>
 
 ```{r}
 ratings <- c("High", "Medium", "Low")
+
+ratings_fct <- factor(ratings, levels = c("Low", "Medium", "High"))
+ratings_fct
+sort(ratings_fct)
 ```
 
 
