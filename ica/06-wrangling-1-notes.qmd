@@ -238,22 +238,27 @@ diamonds |> filter(price < 400 | price > 10000)
 diamonds |> filter(price >= 500 & price <= 600)
 
 # 3 - wrong way with ==
-diamonds |> filter(cut == c("Fair", "Premium", "Ideal")) # recycling warning!
+diamonds |> mutate(is_fpi = cut == c("Fair", "Premium", "Ideal")) |> 
+    summarize(num_fpi = sum(is_fpi), frac_fpi = mean(is_fpi))
 
-# 3 - correct way
-diamonds |> filter(cut %in% c("Fair", "Premium", "Ideal")) |> summarize(n = n())
-diamonds |> summarize(
-  count = sum(cut %in% c("Fair", "Premium", "Ideal")),
-  fraction = mean(cut %in% c("Fair", "Premium", "Ideal"))
-)
+# 3 - correct way with %in%
+diamonds |> mutate(is_fpi = cut %in% c("Fair", "Premium", "Ideal")) |> 
+    summarize(num_fpi = sum(is_fpi), frac_fpi = mean(is_fpi))
 
 # 4
-any(diamonds$cut == "Fair" & diamonds$price > 3000)
-all(diamonds$cut == "Ideal" & diamonds$price > 2000)
+diamonds |> filter(cut == "Fair") |> summarize(any_high = any(price > 3000))
+diamonds |> filter(cut == "Ideal") |> summarize(all_high = all(price > 2000))
 
 # 5
-
-
+diamonds |> 
+    mutate(
+        price_cat1 = if_else(price < 500, "low", "high"),
+        price_cat2 = case_when(
+            price < 500 ~ "low",
+            price >= 500 & price <= 1000 ~ "medium",
+            price > 1000 ~ "high"
+        )
+    )
 ```
 
 
@@ -289,9 +294,6 @@ The [Numbers](https://r4ds.hadley.nz/numbers) chapter in R4DS covers the followi
 - `lead(), lag()`: shift a vector by padding with NAs
 - Numerical summaries: `mean`, `median`, `min`, `max`, `quantile`, `sd`, `IQR`
     - Note that all numerical summary functions have an `na.rm` argument that should be set to `TRUE` if you have missing data.
-
-
-
 
 
 ### Exercises 
@@ -534,7 +536,7 @@ gss_cat |>
 ```{r}
 ratings <- c("High", "Medium", "Low")
 
-ratings_fct <- factor(ratings, levels = c("Low", "Medium", "High"))
+ratings_fct <- fct(ratings, levels = c("Low", "Medium", "High"))
 ratings_fct
 sort(ratings_fct)
 ```
@@ -545,4 +547,3 @@ More exercises will be on HW4.
 ## Done!
 
 - Check the ICA Instructions for how to (a) push your code to GitHub and (b) update your portfolio website
-

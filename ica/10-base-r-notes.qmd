@@ -213,7 +213,7 @@ y[c(TRUE, FALSE, TRUE)]
 y[y |> map_lgl(~ is.numeric(.x))] # example of a map function!
 y[y |> map_lgl(~ is.character(.x))]
 ```
-# This will 
+
 
 
 4.  **A character vector**.
@@ -324,6 +324,34 @@ mtcars |> pull(mpg)
 a. The elements at even-numbered positions. (Hint: use the `seq()` function.)
 b. Every element except the last value.
 c. Only even values (and no missing values).
+```{r}
+# a. Elements at even-numbered positions
+get_even_pos <- function(x) {
+    if (length(x) <= 1) {
+        print("No even positions")
+    } else {
+        idx <- seq(2, length(x), by = 2)
+        x[idx]
+    }
+}
+get_even_pos(1:10)
+get_even_pos(1:9)
+get_even_pos(1)
+
+# b. Every element except the last value
+get_all_but_last <- function(x) {
+    head(x, -1)
+}
+get_all_but_last(1:10)
+
+# c. Only even values and no missing values
+get_evens <- function(x) {
+    x[x %% 2 == 0 & !is.na(x)]
+}
+get_evens(c(1, 2, 7, NA))
+get_evens(c(1, 2, 7, 8, NA))
+```
+
 
 ## Exploring the structure of an object with `str()`  
 
@@ -389,7 +417,23 @@ fit_mod_and_extract <- function(___) {
 ```
 
 ```{r}
+fit_mod_and_extract <- function(data, yvar, preds, pred_of_interest) {
+    mod_formula_str <- str_c(yvar, "~", str_c(preds, collapse = "+"))
+    mod_form <- as.formula(mod_formula_str)
+    
+    mod <- lm(mod_form, data = data)
+    
+    ci <- confint(mod, level = 0.95)
+    
+    tibble(
+        which_pred = pred_of_interest,
+        estimate = mod$coefficients[pred_of_interest],
+        ci_lower = ci[pred_of_interest, "2.5 %"],
+        ci_upper = ci[pred_of_interest, "97.5 %"]
+    )
+}
 
+fit_mod_and_extract(data = mtcars, yvar = "mpg", preds = c("hp", "wt"), pred_of_interest = "hp")
 
 
 

@@ -150,6 +150,9 @@ Within a dataset, multiple mechanisms may be present--we need to consider the mi
   a. In a clinical trial, some patients dropped out before the end of the study. Their reasons for dropping out were not recorded.
   b. A weather station records temperature, humidity, and wind speed every hour. Some of the recorded values are missing.
   c. A social media platform collects data on user interactions, such as likes, comments, and shares. Some interactions are not recorded due to bugs in the code.
+  a. MNAR probably: The chance of missingness is likely due to factors that aren't recorded (like discomfort from the treatment).
+  b. Could be MCAR if the missing values are from technical glitches. Could be MAR if the missing values are related to other measured weather variables. Could be MNAR if the values tend to be missing when the values themselves are high (e.g., high temperature causing device malfunction).
+  c. Could be MCAR if the bugs affected the platform uniformly. Could be MAR if the bugs affected groups of users differently but where the groupings are known (e.g., mobile vs. desktop). Could be MNAR if the bugs lead to issues affecting users with slower internet where internet speed is not measured.
 
 
 
@@ -237,6 +240,7 @@ ggplot(airquality, aes(x = Solar.R, y = Ozone)) +
 ## Exercises 
 
 2. **Mechanism detection practice** Look at the boxplot + scatterplot pairs for Alternate Situations 1 and 2 below. How do these situations compare to our actual situation and to each other? What concerns might arise from using a model to impute `Ozone`?
+Ozone is missing when Solar.R is at higher values for both alternative situations. In Alt 1, we have some observed data in the range of Solar.R where Ozone is missing, so we could predict it fairly well. In Alt 2, Ozone is missing when Solar.R is beyond the values of our observed data, so we don't have a good sense of the relationship — this would require extrapolation and is concerning.
 
 ```{r miss_scatter_na_markers_alt}
 #| eval: true
@@ -273,7 +277,27 @@ We want to see how `Month`, `Wind`, and `Temp` relate to the chance of missingne
 Does it look like a linear regression model (perhaps with variable transformations) could be effective in imputing the missing ozone data?
 
 ```{r}
+ggplot(airquality, aes(fill = is.na(Ozone), x = factor(Month))) +
+    geom_bar(position = "fill")
 
+ggplot(airquality, aes(x = is.na(Ozone), y = Wind)) +
+    geom_boxplot()
+
+ggplot(airquality, aes(x = is.na(Ozone), y = Temp)) +
+    geom_boxplot()
+
+ggplot(airquality, aes(x = factor(Month), y = Ozone)) +
+    geom_boxplot()
+
+ggplot(airquality, aes(x = Wind, y = Ozone)) +
+    geom_point() +
+    geom_smooth() +
+    geom_vline(data = airquality |> filter(is.na(Ozone)), mapping = aes(xintercept = Wind))
+
+ggplot(airquality, aes(x = Temp, y = Ozone)) +
+    geom_point() +
+    geom_smooth() +
+    geom_vline(data = airquality |> filter(is.na(Ozone)), mapping = aes(xintercept = Temp))
 
 ```
 

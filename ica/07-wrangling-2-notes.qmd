@@ -96,8 +96,8 @@ str_view(string3)
 **Exercise:** Create the string `It's Thursday`. What happens if you put the string inside single quotes? Double quotes?
 
 ```{r ex_create_string}
-# Your code
-
+x <- "It's Thursday" # Need double quotes because of the apostrophe
+# x <- 'It's Thursday' # This breaks because the apostrophe ends the string early
 ```
 
 
@@ -116,7 +116,9 @@ Given that `\` is a special character, how can we put the `\` character in strin
 **Exercise:** Create the string `C:\Users`. What happens when you don't escape the `\`?
 
 ```{r ex_create_string_slash}
-# Your code
+x <- "C:\\Users"
+str_view(x)
+# x <- "C:\Users" # This breaks because \U is interpreted as a special escape
 ```
 
 
@@ -174,6 +176,13 @@ df_dates <- tibble(
 
 ```
 
+```{r}
+df_dates |>
+    mutate(
+        date1 = str_c(month, "-", day, "-", year),
+        date2 = str_glue("{month}-{day}-{year}")
+    )
+```
 
 
 ## Extracting information from strings   
@@ -220,6 +229,14 @@ df <- tibble(
 
 ```
 
+```{r}
+df |>
+    mutate(
+        word_length = str_length(word),
+        middle_pos = ceiling(word_length/2),
+        middle_letter = str_sub(word, middle_pos, middle_pos)
+    )
+```
 
 
 ## Finding patterns in strings with regular expressions 
@@ -257,9 +274,11 @@ str_view(fruit, "berry")
 **Exercise:** Before running the code below, predict what matches will be made. Run the code to check your guesses. Note that in all regex's below the `?, +, *` applies to the `b` only (not the `a`).
 
 ```{r ex_regex_quantifiers}
-#| eval: false
+# ab? matches "a" then "b" at most once — so "a" and "ab" match, but not "abb"
 str_view(c("a", "ab", "abb"), "ab?")
+# ab+ requires at least one "b" after "a" — so "a" alone doesn't match
 str_view(c("a", "ab", "abb"), "ab+")
+# ab* matches "a" followed by any number of b's including zero — all match
 str_view(c("a", "ab", "abb"), "ab*")
 ```
 
@@ -279,7 +298,7 @@ str_view(words, "[^aeiou]y[^aeiou]")
 **Exercise** Using the `words` data, find words that have two vowels in a row followed by an "m".
 
 ```{r ex_regex_classes}
-# Your code
+str_view(words, "[aeiou][aeiou]m")
 
 ```
 
@@ -296,7 +315,7 @@ str_view(fruit, "apple|melon|nut")
 **Exercise:** Using the `fruit` data, find fruits that have a repeated vowel ("aa", "ee", "ii", "oo", or "uu".)
 
 ```{r ex_regex_alternation}
-# Your code
+str_view(fruit, "aa|ee|ii|oo|uu")
 
 ```
 
@@ -310,8 +329,11 @@ str_view(fruit, "apple|melon|nut")
 **Exercise:** Using the `words` data, find (1) words that start with "y" and (2) words that don't start with "y".
 
 ```{r ex_regex_start_end_group}
-# Your code
+# Words that start with y
+str_view(words, "^y")
 
+# Words that don't start with y
+str_view(words, "^[^y]")
 
 ```
 
@@ -342,7 +364,12 @@ The following are core `stringr` functions that use regular expressions:
 **Exercise:** Starting from `str_count()`, explore each of these functions by pulling up the function documentation page and reading through the arguments. Try out each function using the `posts` data.
 
 ```{r}
-
+str_count(posts$question_only, "happi")
+str_detect(posts$question_only, "happi")
+str_subset(posts$question_only, "happi")
+str_extract(posts$question_only, "happi")
+str_replace(posts$question_only, "happi", "HAPPI")
+str_remove(posts$question_only, "happi")
 ```
 
 ## Done!
