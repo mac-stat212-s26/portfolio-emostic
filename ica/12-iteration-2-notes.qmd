@@ -32,6 +32,7 @@ Recall that:
 - Then translate each step to code.
 
 ```{r}
+#| eval: false
 col_classes <- vector("character", ncol(mtcars))
 
 for (i in seq_along(mtcars)) {

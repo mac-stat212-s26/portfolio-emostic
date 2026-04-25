@@ -364,6 +364,7 @@ The following are core `stringr` functions that use regular expressions:
 **Exercise:** Starting from `str_count()`, explore each of these functions by pulling up the function documentation page and reading through the arguments. Try out each function using the `posts` data.
 
 ```{r}
+#| eval: false
 str_count(posts$question_only, "happi")
 str_detect(posts$question_only, "happi")
 str_subset(posts$question_only, "happi")

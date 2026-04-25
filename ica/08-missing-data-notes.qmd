@@ -337,6 +337,7 @@ We can use a **simulation study** to investigate the statistical properties desc
 We will slowly step through the simulation study code below. We will pause frequently for you to add comments documenting what is happening. 
 
 ```{r mult_single_sim_study}
+#| eval: false
 set.seed(224)
 num_simulations <- 1000
 ci_list <- vector("list", length = num_simulations)

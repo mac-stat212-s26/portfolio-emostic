@@ -399,6 +399,7 @@ group_means <- function(df, group_var, mean_var) {
 The `{{ var }}` tells R to look at what the variable specified by the input  `var` rather than look for a variable called `var`.
 
 ```{r}
+#| eval: false
 group_means(diamonds, group_var = cut, mean_var = carat)
 ```
 
@@ -422,6 +423,7 @@ When `c(cut, color)` is put inside `{{ c(cut, color) }}` within the function, R 
 To fix this, we need the `pick()` function to get R to see `{{ group_var }}` as a vector of separate variables (like the way `select()` works).
 
 ```{r}
+#| eval: false
 group_means <- function(df, group_var, mean_var) {
     df |>
         group_by(pick({{ group_var }})) |>
@@ -433,6 +435,7 @@ group_means <- function(df, group_var, mean_var) {
 6. **Prop function** Create a new version of `dplyr::count()` that also shows proportions instead of just sample sizes. The function should be able to handle counting by multiple variables. Test your function with two different sets of arguments using the `diamonds` dataset.
 
 ```{r}
+#| eval: false
 count_prop <- function(df, ...) {
   df |>
     count(pick({{ ... }})) |>
@@ -450,6 +453,7 @@ count_prop(diamonds, cut, color)
 
 
 ```{r}
+#| eval: false
 scatter_smooth <- function(df, x_var, y_var) {
   ggplot(df, aes(x = {{ x_var }}, y = {{ y_var }})) +
     geom_point(alpha = 0.3) +

@@ -48,6 +48,7 @@ Let's talk about iteration in R.
 
 
 ```{r}
+#| eval: false
 library(tidyverse)
 ```
 
@@ -104,6 +105,7 @@ for (i in seq_len(length(groups))) {
 A nice feature of `seq_along()` is that it generates an empty iteration vector if the vector you're iterating over itself has length 0.
 
 ```{r}
+#| eval: false
 no_groups <- c()
 seq_along(no_groups)
 for (i in seq_along(no_groups)) {
@@ -158,6 +160,7 @@ list_storage
 If you don't create a storage container ahead of time, you will regret it. Let's bench mark our code to see the difference!
 
 ```{r}
+#| eval: false
 # Example 1: No storage container; append new value to existing vector
 x <- integer()
 bench::mark(
@@ -262,6 +265,7 @@ diamonds |>
 ```
 
 ```{r}
+#| eval: false
 # Option 2: Use an "anonymous" or "lambda" function that isn't named/saved
 diamonds |> 
     mutate(across(.cols = c(carat, x, y, z), .fns = function(x) {round(x, digits = 1)} ))
@@ -311,6 +315,7 @@ Using the `diamonds` dataset:
 1. Transform the `x`, `y`, and `z` columns so that the units of millimeters are displayed (e.g., "4.0 mm").
 
 ```{r}
+#| eval: false
 diamonds |> 
     mutate(across(.cols = c(x, y, z), .fns = function(x) str_c(x, " mm")))
 ```
@@ -319,6 +324,7 @@ diamonds |>
     - Hint: type `is.` and hit Tab in the Console. Scroll through the function options. Do the same with `as.`
 
 ```{r}
+#| eval: false
 diamonds |>
     mutate(across(.cols = where(is.numeric), .fns = as.character))
 ```
@@ -366,6 +372,7 @@ The `tidyr` package has a useful function called `crossing()` that is useful for
 For each argument, we specify all possible values for that argument. `crossing()` generates all combinations:
 
 ```{r}
+#| eval: false
 df_arg_combos <- crossing(
     impute = c(TRUE, FALSE),
     filter_to = c("All cases", "Group 1", "Groups 1 and 2")
@@ -398,6 +405,7 @@ Work with your partner on the following exercises. As you work, make note of wha
 1. Use `crossing()` to create the data frame of argument combinations for our analyses. Call it `df_arg_combos`. Note that you can create a list of **formula** objects in R with `c(y ~ x1, y ~ x1 + x2)`. (Something like this will be the right hand side of an argument to `crossing()`.)
 
 ```{r}
+#| eval: false
 df_arg_combos <- crossing(
     mod_formula = c(price ~ carat, price ~ carat + cut, price ~ carat + cut + clarity, price ~ carat + cut + clarity + color),
     remove_outliers = c(TRUE, FALSE)
@@ -408,6 +416,7 @@ df_arg_combos
 2. Write a function called `remove_outliers` that removes outliers in a dataset. The user should be able to supply the dataset (`data`), the variable to remove outliers in (`what_var`), and a threshold on the number of SDs away from the mean used to define outliers (`sd_thresh`). Write your function so that it runs as follows: `remove_outliers(diamonds, what_var = carat, sd_thresh = 3)`.
 
 ```{r}
+#| eval: false
 remove_outliers <- function(data, what_var, sd_thresh) {
     data |> 
         mutate(zscore = ({{ what_var }} - mean({{ what_var }}, na.rm = TRUE)) / sd({{ what_var }}, na.rm = TRUE)) |>
@@ -427,6 +436,7 @@ fit_model <- function(data, mod_formula, remove_outliers) {
 ```
 
 ```{r}
+#| eval: false
 fit_model <- function(data, mod_formula, remove_outliers) {
     if (remove_outliers) {
         data_clean <- remove_outliers(data, what_var = carat, sd_thresh = 3)
@@ -453,6 +463,7 @@ Note that in `df_arg_combos`:
 - `remove_outliers`: this column is a **vector** and you can extract the 1st element with `[1]`
 
 ```{r}
+#| eval: false
 lin_mod_res_for <- vector(mode = "list", length = nrow(df_arg_combos))
 
 for (i in seq_along(lin_mod_res_for)) {
