@@ -2,41 +2,22 @@
 title: "Welcome"
 ---
 
+Welcome to my online portfolio for **COMP/STAT 212: Intermediate Data Science** taken at [Macalester College](https://www.macalester.edu/). Use the sidebar on the left to navigate.
 
-Welcome to my online portfolio for COMP/STAT112 course taken at [Macalester College](https://www.macalester.edu/).  Please, use the side bar on the left for navigation.
+I'm **Elma Mostic**, a sophomore double-majoring in Economics and Data Science. This portfolio collects the visualizations, analyses, and in-class work I built throughout Spring 2026 — from advanced wrangling to web scraping to interactive graphics.
+
+---
 
 ```{r}
 #| output: false
 #| echo: false
-
 packages <- c("wordcloud2", "here")
-```
-
-```{r}
-#| output: false
-#| echo: false
-
 install.packages(setdiff(packages, rownames(installed.packages())), repos = "http://cran.us.r-project.org")
-```
-
-```{r}
-#| output: false
-#| echo: false
-#| message: false
-
 lapply(packages, require, character.only = TRUE)
 ```
 
 ```{r}
-#| output: false
 #| echo: false
-
 ds <- read.csv(here("assets", "msg.csv"))
-```
-
-```{r}
-#| echo: false
-
 wordcloud2(data = ds, shape = "cardioid")
 ```
-
