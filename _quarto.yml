@@ -44,6 +44,10 @@ book:
       - ica/16-databases-notes.qmd
       - ica/18-interactive-viz-notes.qmd
 
+    - part: "Pre-Class Learnings"
+      chapters:
+      - pcl/pcl.qmd
+
 format:
   html:
     theme:

@@ -1,5 +1,66 @@
 ---
-title: "Extra Sample 1"
+title: "Extras"
 ---
 
-Add content here
+This page highlights experiences from outside the classroom that shaped how I think about data science in practice - competition, research, and professional work.
+
+---
+
+## DataFest 2026 - Best in Insight
+
+**Macalester College · March 2026**
+
+Over one weekend in late March, my team of five spent 42 hours working through a large, complex real-world dataset from Stormont Vail Health. We had to move fast, make judgment calls with incomplete information, and keep our analysis focused under pressure.
+
+We explored how geography and access shape real-world health outcomes and proposed a three-tier satellite care system to reduce friction for the people most affected. At the end of the weekend, our team was awarded **Best in Insight**.
+
+**What I took away:**
+
+- Stronger skills in R, data analysis, and visualization under time pressure
+- A better sense of how to communicate findings clearly to a non-technical audience
+- A deeper appreciation for how much the quality of your team shapes the quality of your work
+
+**My teammates:** Devya Sijapati Thapa, Su Thiri Kyaw, Abdullah Farea, and Kaif Kassam. Their energy, curiosity, and commitment throughout the whole weekend made all the difference.
+
+This was also my second DataFest - I competed in 2025 as well, placing 2nd. Coming back and winning Best in Insight felt like real growth.
+
+---
+
+## Xcel Energy Foundation - Corporate Giving Intern
+
+**Summer & Fall 2026 · Minneapolis, MN**
+
+After a thoughtful recruiting process - including coursework, case prep, behavioral interview practice, and a panel interview with Esther Wildermuth, Megan Hannon, and Kristine Kosek - I accepted an offer to join the Xcel Energy Foundation as a **Corporate Giving Intern**.
+
+The Foundation has invested nearly $160 million in local communities since 2001 and serves as the strategic philanthropic arm of one of the largest energy companies in the US. I'll be working on data, strategy, and evaluation across employee giving and community impact programs - specifically helping the team move from tracking metrics to understanding what actually drives impact.
+
+This feels especially meaningful given my recent independent research on financial access and predatory lending in the Twin Cities. Being able to work on the action side of that same question, in the same city, feels like a natural next step.
+
+**What I'll be doing:**
+
+- Applying my background in economics and data science to evaluate program effectiveness
+- Analyzing community investment data to surface insights that inform strategy
+- Supporting the team's shift from output tracking to impact understanding
+
+---
+
+## QSIDE Data4Justice Winter Accelerator
+
+**QSIDE Institute · January - February 2026 · Remote**
+
+I was awarded a **full scholarship** to the QSIDE Institute's Data4Justice Winter Accelerator, a competitive 5-week program focused on quantitative social justice research.
+
+**My independent research project:** *Mapping Financial Access and Predatory Lending in the Twin Cities*
+
+I analyzed neighborhood-level consumer debt and payday lender density across the Twin Cities using Census and CFPB data. The project applied:
+
+- Geospatial regression and statistical modeling in R
+- Spatial analysis to map the distribution of financial resources across communities
+- Data visualization to communicate findings to non-technical audiences
+- Ethical data practices and equity-centered framing throughout
+
+The research examined how financial resources - and financial predation - are unevenly distributed across neighborhoods, and what that means for the communities most affected.
+
+The accelerator reinforced my conviction that rigorous data analysis and a commitment to equity are not in tension - they belong together.
+
+**Skills:** R, geospatial analysis, regression modeling, data visualization, CFPB and Census data, ethical data practices

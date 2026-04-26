@@ -1,11 +1,551 @@
 ---
-title: "Pre-Class Learning Summaries"
+title: "Pre-Class Learnings"
 ---
 
-## R
+This page summarizes the pre-class preparation for each ICA — readings, videos, data story critiques, and my personal notes.
 
-![](0808-r.png)
+---
 
-## Quarto
+## 2 Review
 
-![from qmd4sci.njtierney.com](0810-quarto.jpeg)
+**To prepare:** Read the File Organization, Git & GitHub, and Keyboard Shortcut appendices.
+
+**Data Story Critique:** [Rhythm of Food](https://rhythm-of-food.net/#explore-foods)
+
+- *What is the data story?* Seasonal search trends for foods around the world as radial charts over 52 weeks.
+- *What is effective?* The radial format makes seasonal patterns immediately visible.
+- *What could be improved?* Comparing across foods is hard — a shared axis would help.
+
+### My Notes
+
+**File Organization** — the golden rule: never touch raw data.
+
+```
+project/
+├── code/
+├── data/
+│   ├── raw/        # DO NOT EDIT
+│   └── processed/
+└── results/
+```
+
+- ❌ Absolute path: `C:/Users/Name/...` — breaks on other computers
+- ✅ Relative path: `./` = current folder, `../` = go up one folder
+
+**Git Workflow:** Add → Commit → Push → Pull
+
+**Shortcuts:**
+
+| Action | Windows | Mac |
+|---|---|---|
+| New chunk | Ctrl+Alt+I | Cmd+Opt+I |
+| Pipe | Ctrl+Shift+M | Cmd+Shift+M |
+| Assign `<-` | Alt+- | Opt+- |
+| Run code | Ctrl+Enter | Cmd+Return |
+
+---
+
+## 3 Advanced Data Viz
+
+**To prepare:** Read Chapter 1 in D4DS. Complete Moodle checkpoint.
+
+**Data Story Critique:** [Spotify Fan Study](https://fanstudy.byspotify.com/edition/spotify-playlists)
+
+- *What is the data story?* How listeners build and use playlists.
+- *What is effective?* Scroll-driven narrative with clean on-brand design.
+- *What could be improved?* No user-driven exploration of your own data.
+
+### My Notes
+
+```r
+ggplot(data = <DATA>, mapping = aes(<MAPPINGS>)) +
+  <GEOM_FUNCTION>()
+```
+
+- Inside `aes()` → mapped to data (changes with data)
+- Outside `aes()` → fixed value (e.g., `color = "blue"`)
+
+| Plot type | Geom |
+|---|---|
+| Bar chart | `geom_bar()` |
+| Histogram | `geom_histogram()` |
+| Density | `geom_density()` |
+| Boxplot | `geom_boxplot()` |
+| Scatterplot | `geom_point()` |
+| Trend line | `geom_smooth(method = "lm")` |
+
+Facet: `facet_wrap(~variable)` — Save: `ggsave("plot.png")`
+
+---
+
+## 4 Advanced Spatial Viz
+
+**To prepare:** Watch CRS video. Read Spatial Data Appendix. Complete Moodle checkpoint.
+
+**Data Story Critique:** [USGS Drought Timeline](https://labs.waterdata.usgs.gov/visualizations/drought-timeline/index.html#/)
+
+- *What is the data story?* History of US drought over decades as an animated timeline.
+- *What is effective?* Geographic + temporal combination shows droughts spreading and receding.
+- *What could be improved?* Color scale needs a more prominent legend; hover tooltips would help.
+
+### My Notes
+
+**CRS = 3 components:**
+
+1. **Ellipsoid** — mathematical shape of Earth (WGS84, GRS80)
+2. **Datum** — anchor point. WGS84 = global/GPS. NAD83 = North America. Mixing datums = ~3–4ft error.
+3. **Projection** — 3D → 2D. Always distorts one of: angle, area, or distance.
+
+Mercator: preserves direction, distorts size near poles.
+
+**Data models:**
+
+- **Vector** — points (cities), lines (roads), polygons (boundaries). Formats: `.shp`, `.geojson`
+- **Raster** — grid of pixels, each with one value (elevation, temp). Higher resolution = bigger file.
+
+---
+
+## 6 Advanced Data Wrangling I
+
+**To prepare:** Read Chapters 12, 13, 16, 17 in D4DS. Complete Moodle checkpoint.
+
+**Data Story Critique:** [How Life Has Changed — ABC Australia](https://www.abc.net.au/news/2018-12-13/how-life-has-changed-for-people-your-age/10303912)
+
+- *What is the data story?* How life milestones have shifted across generations in Australia.
+- *What is effective?* "People your age" framing makes data feel personal. Age slider is excellent.
+- *What could be improved?* Australian-only context limits generalizability.
+
+### My Notes
+
+**Logical Vectors** — `TRUE`, `FALSE`, `NA`. Created with `>`, `<`, `>=`, `<=`, `==`, `!=`
+
+```r
+is.na(x)              # check missing
+x %in% c(11, 12)     # set membership (use instead of ==)
+any()  all()  sum()  mean()   # summaries
+if_else()   case_when()       # conditional changes
+```
+
+**Numbers**
+
+```r
+parse_number("$1,200")   # → 1200
+n()   n_distinct()       # counting
+sum(is.na(x))            # count missing
+%/%   %%                 # integer division, remainder
+cumsum()   lag()   lead()
+```
+
+**Factors** — control order in plots, prevent typos.
+
+```r
+fct_reorder()   fct_infreq()   fct_rev()
+fct_recode()    fct_collapse()  fct_lump_*()
+```
+
+**Dates**
+
+```r
+ymd()  mdy()  dmy()        # parse strings
+today()  now()             # current date/time
+year()  month()  wday()    # extract parts
+with_tz()   force_tz()     # time zones
+```
+
+---
+
+## 7 Advanced Data Wrangling II
+
+**To prepare:** Read Chapters 14, 15, 19 in D4DS. Complete Moodle checkpoint.
+
+**Data Story Critique:** [USGS Mule Deer Migration](https://geonarrative.usgs.gov/muledeer255/)
+
+- *What is the data story?* GPS-tracked migration of one mule deer across Wyoming, revealing habitat use and human impact.
+- *What is effective?* Focus on one individual makes data personal. Scroll-driven map is excellent.
+- *What could be improved?* Ends abruptly — population-level comparisons would add scientific context.
+
+### My Notes
+
+**Strings** — use `stringr` (part of tidyverse).
+
+```r
+str_c()        # combine strings
+str_glue("{first} {last}")   # template style
+str_length()   str_sub()     # length and substring
+str_detect()   str_count()   str_replace()   str_remove()
+```
+
+Special characters: `\"`, `\\`, `\t` (tab), `\n` (newline)
+
+**Regular Expressions:**
+
+```r
+"."        # any character
+"^"        # start of string
+"$"        # end of string
+"?"  "+"  "*"          # 0-or-1, 1+, 0+ times
+"[aeiou]"  "[^aeiou]"  # character classes
+"|"        # OR
+```
+
+---
+
+## 8 Missing Data
+
+**To prepare:** Read Chapter 18 in D4DS. Complete Moodle checkpoint.
+
+**Data Story Critique:** [Gates Foundation Goalkeepers 2019](https://www.gatesfoundation.org/goalkeepers/report/2019-report/#ExaminingInequality)
+
+- *What is the data story?* Global progress on health and poverty with focus on gender and geographic inequality.
+- *What is effective?* Small multiples with consistent color make country comparisons readable.
+- *What could be improved?* Too many overlapping labels — interactivity to highlight countries would help.
+
+### My Notes
+
+**3 Missing Data Mechanisms:**
+
+- **MCAR** — unrelated to data. Complete case analysis is valid.
+- **MAR** — related to observed variables. Use imputation.
+- **MNAR** — related to the missing values themselves. Hardest to handle.
+
+**3 Ways to deal with missingness:**
+
+1. Drop (complete case) — easy but loses data; biased if not MCAR
+2. Create a "missing" category — useful when NA is meaningful
+3. Impute — single imputation underestimates uncertainty; **multiple imputation** (`mice` package) preferred
+
+```r
+naniar::vis_miss(df)           # visual map of NAs
+naniar::miss_var_summary(df)   # table by variable
+ggplot(df, aes(x = is.na(Ozone), y = Solar.R)) + geom_boxplot()
+```
+
+---
+
+## 9 Functions
+
+**To prepare:** Read Chapter 25 in D4DS, Section 13.1 in R Programming for Data Science. Complete Moodle checkpoint.
+
+**Data Story Critique:** [How Much We Ate — FlowingData](https://flowingdata.com/2021/06/08/seeing-how-much-we-ate-over-the-years/)
+
+- *What is the data story?* US food consumption per capita trends by category over decades.
+- *What is effective?* Stacked area shows category trends and overall growth simultaneously.
+- *What could be improved?* Categories are too broad — more granular breakdowns would reveal nuance.
+
+### My Notes
+
+If you've copy-pasted code 3+ times → write a function.
+
+```r
+function_name <- function(input1, input2 = default) {
+  # body
+  return(output)
+}
+```
+
+**Scope:** objects created inside a function aren't accessible outside unless returned.
+
+**Embrace `{{ }}` for tidyverse functions:**
+
+```r
+group_means <- function(df, group_var, mean_var) {
+  df |>
+    group_by({{ group_var }}) |>
+    summarize(mean = mean({{ mean_var }}))
+}
+```
+
+**if-else:**
+
+```r
+if (condition) { } else if (other) { } else { }
+```
+
+Note: `if()` is not vectorized — use `if_else()` or `case_when()` inside `mutate()`.
+
+---
+
+## 10 Base R
+
+**To prepare:** Read Chapter 27 in D4DS. Complete Moodle checkpoint.
+
+**Data Story Critique:** [NYT Carbon Budget](https://www.nytimes.com/interactive/2017/08/29/opinion/climate-change-carbon-budget.html)
+
+- *What is the data story?* How fast humanity is burning through its carbon budget to stay within temperature targets.
+- *What is effective?* The "budget" metaphor is instantly intuitive. Scrollytelling creates urgency.
+- *What could be improved?* No counterfactual scenarios — showing what policies would "buy" would help.
+
+### My Notes
+
+**Subsetting with `[`:**
+
+```r
+x[c(1, 3)]      # by position
+x[-1]            # drop first
+x[x > 5]        # by logical
+x["name"]        # by name
+m[1, ]           # matrix first row
+m[, 2]           # matrix second column
+```
+
+**Single element extraction:** `df$mpg`, `df[["mpg"]]`, `df |> pull(mpg)`
+
+**`str()`** — shows structure of any object. Dollar signs = extractable named components.
+
+---
+
+## 11 Loops + Iteration I
+
+**To prepare:** Read Chapter 26 in D4DS. Complete Moodle checkpoint.
+
+**Data Story Critique:** [NZ Election 2020 — Stuff](https://interactives.stuff.co.nz/2020/10/election-2020-results-analysis-labour-day/)
+
+- *What is the data story?* NZ 2020 election — Labour's historic win and political landscape shift.
+- *What is effective?* Maps, bar charts, and time series give a comprehensive view.
+- *What could be improved?* Very dense — a "key findings" section at the top would orient readers.
+
+### My Notes
+
+Always **pre-allocate storage:**
+
+```r
+output <- vector("list", length = 10)
+for (i in seq_along(output)) {
+  output[[i]] <- some_function(i)
+}
+```
+
+Use `seq_along(v)` (safe with length-0 vectors), `seq_len(nrow(df))` for row iteration.
+
+**`across()` for column-wise operations:**
+
+```r
+diamonds |>
+  mutate(across(c(carat, x, y, z), function(x) round(x, 1)))
+
+diamonds |>
+  group_by(cut) |>
+  summarize(across(where(is.numeric), list(mean = mean, sd = sd)))
+```
+
+---
+
+## 12 Loops + Iteration II
+
+**To prepare:** Read the "Learn to purrr" tutorial. Complete Moodle checkpoint.
+
+**Data Story Critique:** [Oxfam Ireland Impact](https://stories.oxfamireland.org/impact/index.html)
+
+- *What is the data story?* Human impact of Oxfam programs through individual stories and aggregate data.
+- *What is effective?* Personal storytelling makes impact feel real.
+- *What could be improved?* Visualizations are decorative — rigorous charts would add credibility.
+
+### My Notes
+
+| Function | Returns |
+|---|---|
+| `map()` | list |
+| `map_chr()` | character vector |
+| `map_dbl()` | numeric vector |
+| `map_int()` | integer vector |
+| `map_lgl()` | logical vector |
+
+```r
+map_dbl(diamonds |> select(where(is.numeric)), mean)
+pmap(args_df, rnorm)   # iterate over rows
+walk2(paths, plots, function(p, pl) ggsave(p, pl))  # side effects
+```
+
+Failing loudly is a feature — use typed `map_*()` to catch type errors early.
+
+---
+
+## 13 APIs I
+
+**To prepare:** Read "A Non-Programmer's Introduction to JSON," "Understanding URL," and the `urltools` vignette.
+
+**Data Story Critique:** [NYT — Mortgages & Interest Rates](https://www.nytimes.com/interactive/2024/09/18/business/economy/mortgages-car-loans-interest-rates.html)
+
+- *What is the data story?* How rising interest rates increased monthly costs of mortgages and car loans since 2022.
+- *What is effective?* Dollar-amount framing makes abstract rate changes feel personal.
+- *What could be improved?* A loan calculator for users' own amounts would be far more actionable.
+
+### My Notes
+
+**JSON syntax:** `{}` = object, `[]` = array, `"key": value`, strings in double quotes.
+
+```r
+library(jsonlite)
+fromJSON(json_string)
+fromJSON(json_string, simplifyVector = TRUE)  # try for data frame
+```
+
+**URL structure:**
+`https://api.example.com/data/2019?key=NAME&for=state:*`
+→ scheme + host + path + `?` + query parameters (key=value pairs separated by `&`)
+
+---
+
+## 14 APIs II
+
+**To prepare:** Read "Getting Started With JSON and jsonlite" and "Fetching JSON data from REST APIs." Complete Moodle checkpoint.
+
+**Data Story Critique:** [The Pudding — Music Hype](https://pudding.cool/2019/03/hype/)
+
+- *What is the data story?* Whether Pitchfork critical hype translates to Spotify streaming popularity.
+- *What is effective?* The scatter plot immediately reveals the weak correlation — visual does the argument.
+- *What could be improved?* Doesn't account for time — old vs. new albums on the same axes conflates dynamics.
+
+### My Notes
+
+```r
+library(httr2)
+req <- request("https://api.census.gov") |>
+  req_url_path_append("data") |>
+  req_url_query(get = "NAME", key = my_key)
+
+resp <- req_perform(req)
+data <- resp |> resp_body_json(simplifyVector = TRUE)
+```
+
+Navigate nested lists: `resp$key`, `resp[["key"]]`, `resp[[1]]`
+
+Use `str(list)` or `View(list)` to explore structure. XML responses → `xml2` package.
+
+---
+
+## 15 Web Scraping
+
+**To prepare:** Read the `rvest` vignette "Web scraping 101." Complete Moodle checkpoint.
+
+**Data Story Critique:** [ArcGIS StoryMap Collection](https://storymaps.arcgis.com/collections/7ccaef0b7a4b4166804f36e64e43c4cd)
+
+- *What is the data story?* Environmental and geographic stories through interactive maps.
+- *What is effective?* Map-first approach makes spatial patterns immediately visible.
+- *What could be improved?* Navigation between stories is not intuitive.
+
+### My Notes
+
+Use web scraping only when no API is available. Always check `robots.txt` first.
+
+CSS selectors: `.classname` (class), `#id` (id), `a` (tag type). Use **Selector Gadget** Chrome extension to find selectors by clicking.
+
+```r
+page <- read_html("https://www.nih.gov/news-events/news-releases")
+
+titles <- page |>
+  html_elements(".thumbnail-teaser__heading") |>
+  html_text()
+
+links <- page |>
+  html_elements("a") |>
+  html_attr("href")
+```
+
+Combine with `map()` and `bind_rows()` to scrape multiple pages.
+
+---
+
+## 16 Databases and SQL
+
+**To prepare:** Read Chapter 21 in D4DS. Complete Moodle checkpoint.
+
+**Data Story Critique:** [UNODC Synthetic Drug Strategy](https://vvv.vev.site/unodc-syntheticdrugstrategy-en/)
+
+- *What is the data story?* Global trends in synthetic drug trafficking and seizures.
+- *What is effective?* Maps and charts work together for a clear geographic story.
+- *What could be improved?* Some charts lack clear axis labels.
+
+### My Notes
+
+```r
+con <- DBI::dbConnect(duckdb::duckdb())
+dbWriteTable(con, "flights", nycflights13::flights)
+flights <- tbl(con, "flights")
+flights |> filter(dest == "IAH") |> show_query()
+```
+
+| dplyr | SQL |
+|---|---|
+| `filter()` | `WHERE` |
+| `select()` | `SELECT` |
+| `arrange()` | `ORDER BY` |
+| `group_by() |> summarize()` | `GROUP BY` + aggregate |
+| `left_join()` | `LEFT JOIN ... ON` |
+
+SQL uses `=` (not `==`), `AND`/`OR` (not `&`/`|`).
+
+---
+
+## 17 Effective Viz
+
+**To prepare:** Read Brent Dykes's Data Storytelling article on Forbes. Read Section 4.2 from Mastering Software Dev in R.
+
+**Data Story Critique:** [Africa in 100 Years — The Telegraph](http://s.telegraph.co.uk/graphics/projects/Africa-in-100-years/index.html)
+
+- *What is the data story?* Projections of Africa's demographic shift over the next century.
+- *What is effective?* The long time horizon makes the scale of change viscerally clear.
+- *What could be improved?* No uncertainty shown — confidence intervals would be more honest.
+
+### My Notes
+
+**Presenting a visualization:**
+
+1. Motivation & context — why does this question matter?
+2. Orientation — walk through axes, legends, what a point means
+3. Highlights — focus on 1–2 interesting data points and tell the story
+4. Big picture — overall trends, takeaways, implications
+
+**6 guidelines for great plots:** high data density, clear labels, useful references, highlight interesting aspects, consider small multiples, make order meaningful. Overarching theme: **facilitate comparisons**.
+
+---
+
+## 18 Interactive Viz
+
+**To prepare:** Listen to Data Stories Episode 127 (timestamps 18–25:30).
+
+**Data Story Critique:** [SDG Index Dashboard](https://dashboards.sdgindex.org/map/goals/SDG4)
+
+- *What is the data story?* Country-level progress toward UN SDG 4 (Quality Education).
+- *What is effective?* Choropleth map makes geographic disparities immediately visible.
+- *What could be improved?* Color scale is hard to interpret precisely — a bar chart alongside the map would help.
+
+### My Notes
+
+Use interactivity when it allows users to explore data more quickly or deeply than static visuals.
+
+**Shiny structure:** `ui` (layout + inputs + outputs) + `server` (render functions that listen to inputs) + `shinyApp(ui, server)`
+
+```r
+# *Input() functions go in sidebarPanel()
+selectInput(inputId = "city", label = "City", choices = cities)
+
+# *Output() functions go in mainPanel()
+plotOutput(outputId = "scatter")
+
+# render*() functions go in server
+output$scatter <- renderPlot({
+  data |> filter(metro_name == input$city) |>
+    ggplot(aes(x = distmiles, y = entropy)) + geom_point()
+})
+```
+
+**plotly:** wrap any ggplot in `ggplotly()` for hover, zoom, pan. Use `frame` + `ids` aesthetics for animations.
+
+---
+
+## 19 Quality Control
+
+**To prepare:** No readings — synthesis lesson.
+
+**Data Story Critique:** [Counting Happiness — FlowingData](https://flowingdata.com/2021/07/29/counting-happiness/)
+
+- *What is the data story?* How happiness is distributed across moments of the day from experience sampling data.
+- *What is effective?* Dot-plot style conveys the distribution intuitively.
+- *What could be improved?* Self-reported methodology needs more explanation — easy to misread as population averages.
+
+### My Notes
+
+**Code Quality:** DRY (don't repeat yourself), readable, meaningful names, test cases, efficient (`bench::mark()`), reproducible (relative paths), one function = one simple task.
+
+**Data Quality:** never edit raw data, check for unexpected NAs, use test cases to verify wrangling, when joining — predict row counts and check `anti_join()`, always visualize your data as a sanity check.
