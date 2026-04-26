@@ -1306,5 +1306,203 @@
       "In-Class Activities",
       "<span class='chapter-number'>15</span>  <span class='chapter-title'>18 Interactive Viz</span>"
     ]
+  },
+  {
+    "objectID": "pcl/pcl.html",
+    "href": "pcl/pcl.html",
+    "title": "Pre-Class Learnings",
+    "section": "",
+    "text": "2 Review\nThis page summarizes the pre-class preparation for each ICA — readings, videos, data story critiques, and my personal notes.\nTo prepare: Read the File Organization, Git & GitHub, and Keyboard Shortcut appendices.\nData Story Critique: Rhythm of Food",
+    "crumbs": [
+      "Pre-Class Learnings",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Pre-Class Learnings</span>"
+    ]
+  },
+  {
+    "objectID": "pcl/pcl.html#review",
+    "href": "pcl/pcl.html#review",
+    "title": "Pre-Class Learnings",
+    "section": "",
+    "text": "What is the data story? Seasonal search trends for foods around the world as radial charts over 52 weeks.\nWhat is effective? The radial format makes seasonal patterns immediately visible.\nWhat could be improved? Comparing across foods is hard — a shared axis would help.\n\n\nMy Notes\nFile Organization — the golden rule: never touch raw data.\nproject/\n├── code/\n├── data/\n│   ├── raw/        # DO NOT EDIT\n│   └── processed/\n└── results/\n\n❌ Absolute path: C:/Users/Name/... — breaks on other computers\n✅ Relative path: ./ = current folder, ../ = go up one folder\n\nGit Workflow: Add → Commit → Push → Pull\nShortcuts:\n\n\n\nAction\nWindows\nMac\n\n\n\n\nNew chunk\nCtrl+Alt+I\nCmd+Opt+I\n\n\nPipe\nCtrl+Shift+M\nCmd+Shift+M\n\n\nAssign &lt;-\nAlt+-\nOpt+-\n\n\nRun code\nCtrl+Enter\nCmd+Return",
+    "crumbs": [
+      "Pre-Class Learnings",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Pre-Class Learnings</span>"
+    ]
+  },
+  {
+    "objectID": "pcl/pcl.html#advanced-data-viz",
+    "href": "pcl/pcl.html#advanced-data-viz",
+    "title": "Pre-Class Learnings",
+    "section": "3 Advanced Data Viz",
+    "text": "3 Advanced Data Viz\nTo prepare: Read Chapter 1 in D4DS. Complete Moodle checkpoint.\nData Story Critique: Spotify Fan Study\n\nWhat is the data story? How listeners build and use playlists.\nWhat is effective? Scroll-driven narrative with clean on-brand design.\nWhat could be improved? No user-driven exploration of your own data.\n\n\nMy Notes\nggplot(data = &lt;DATA&gt;, mapping = aes(&lt;MAPPINGS&gt;)) +\n  &lt;GEOM_FUNCTION&gt;()\n\nInside aes() → mapped to data (changes with data)\nOutside aes() → fixed value (e.g., color = \"blue\")\n\n\n\n\nPlot type\nGeom\n\n\n\n\nBar chart\ngeom_bar()\n\n\nHistogram\ngeom_histogram()\n\n\nDensity\ngeom_density()\n\n\nBoxplot\ngeom_boxplot()\n\n\nScatterplot\ngeom_point()\n\n\nTrend line\ngeom_smooth(method = \"lm\")\n\n\n\nFacet: facet_wrap(~variable) — Save: ggsave(\"plot.png\")",
+    "crumbs": [
+      "Pre-Class Learnings",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Pre-Class Learnings</span>"
+    ]
+  },
+  {
+    "objectID": "pcl/pcl.html#advanced-spatial-viz",
+    "href": "pcl/pcl.html#advanced-spatial-viz",
+    "title": "Pre-Class Learnings",
+    "section": "4 Advanced Spatial Viz",
+    "text": "4 Advanced Spatial Viz\nTo prepare: Watch CRS video. Read Spatial Data Appendix. Complete Moodle checkpoint.\nData Story Critique: USGS Drought Timeline\n\nWhat is the data story? History of US drought over decades as an animated timeline.\nWhat is effective? Geographic + temporal combination shows droughts spreading and receding.\nWhat could be improved? Color scale needs a more prominent legend; hover tooltips would help.\n\n\nMy Notes\nCRS = 3 components:\n\nEllipsoid — mathematical shape of Earth (WGS84, GRS80)\nDatum — anchor point. WGS84 = global/GPS. NAD83 = North America. Mixing datums = ~3–4ft error.\nProjection — 3D → 2D. Always distorts one of: angle, area, or distance.\n\nMercator: preserves direction, distorts size near poles.\nData models:\n\nVector — points (cities), lines (roads), polygons (boundaries). Formats: .shp, .geojson\nRaster — grid of pixels, each with one value (elevation, temp). Higher resolution = bigger file.",
+    "crumbs": [
+      "Pre-Class Learnings",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Pre-Class Learnings</span>"
+    ]
+  },
+  {
+    "objectID": "pcl/pcl.html#advanced-data-wrangling-i",
+    "href": "pcl/pcl.html#advanced-data-wrangling-i",
+    "title": "Pre-Class Learnings",
+    "section": "6 Advanced Data Wrangling I",
+    "text": "6 Advanced Data Wrangling I\nTo prepare: Read Chapters 12, 13, 16, 17 in D4DS. Complete Moodle checkpoint.\nData Story Critique: How Life Has Changed — ABC Australia\n\nWhat is the data story? How life milestones have shifted across generations in Australia.\nWhat is effective? “People your age” framing makes data feel personal. Age slider is excellent.\nWhat could be improved? Australian-only context limits generalizability.\n\n\nMy Notes\nLogical Vectors — TRUE, FALSE, NA. Created with &gt;, &lt;, &gt;=, &lt;=, ==, !=\nis.na(x)              # check missing\nx %in% c(11, 12)     # set membership (use instead of ==)\nany()  all()  sum()  mean()   # summaries\nif_else()   case_when()       # conditional changes\nNumbers\nparse_number(\"$1,200\")   # → 1200\nn()   n_distinct()       # counting\nsum(is.na(x))            # count missing\n%/%   %%                 # integer division, remainder\ncumsum()   lag()   lead()\nFactors — control order in plots, prevent typos.\nfct_reorder()   fct_infreq()   fct_rev()\nfct_recode()    fct_collapse()  fct_lump_*()\nDates\nymd()  mdy()  dmy()        # parse strings\ntoday()  now()             # current date/time\nyear()  month()  wday()    # extract parts\nwith_tz()   force_tz()     # time zones",
+    "crumbs": [
+      "Pre-Class Learnings",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Pre-Class Learnings</span>"
+    ]
+  },
+  {
+    "objectID": "pcl/pcl.html#advanced-data-wrangling-ii",
+    "href": "pcl/pcl.html#advanced-data-wrangling-ii",
+    "title": "Pre-Class Learnings",
+    "section": "7 Advanced Data Wrangling II",
+    "text": "7 Advanced Data Wrangling II\nTo prepare: Read Chapters 14, 15, 19 in D4DS. Complete Moodle checkpoint.\nData Story Critique: USGS Mule Deer Migration\n\nWhat is the data story? GPS-tracked migration of one mule deer across Wyoming, revealing habitat use and human impact.\nWhat is effective? Focus on one individual makes data personal. Scroll-driven map is excellent.\nWhat could be improved? Ends abruptly — population-level comparisons would add scientific context.\n\n\nMy Notes\nStrings — use stringr (part of tidyverse).\nstr_c()        # combine strings\nstr_glue(\"{first} {last}\")   # template style\nstr_length()   str_sub()     # length and substring\nstr_detect()   str_count()   str_replace()   str_remove()\nSpecial characters: \\\", \\\\, \\t (tab), \\n (newline)\nRegular Expressions:\n\".\"        # any character\n\"^\"        # start of string\n\"$\"        # end of string\n\"?\"  \"+\"  \"*\"          # 0-or-1, 1+, 0+ times\n\"[aeiou]\"  \"[^aeiou]\"  # character classes\n\"|\"        # OR",
+    "crumbs": [
+      "Pre-Class Learnings",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Pre-Class Learnings</span>"
+    ]
+  },
+  {
+    "objectID": "pcl/pcl.html#missing-data",
+    "href": "pcl/pcl.html#missing-data",
+    "title": "Pre-Class Learnings",
+    "section": "8 Missing Data",
+    "text": "8 Missing Data\nTo prepare: Read Chapter 18 in D4DS. Complete Moodle checkpoint.\nData Story Critique: Gates Foundation Goalkeepers 2019\n\nWhat is the data story? Global progress on health and poverty with focus on gender and geographic inequality.\nWhat is effective? Small multiples with consistent color make country comparisons readable.\nWhat could be improved? Too many overlapping labels — interactivity to highlight countries would help.\n\n\nMy Notes\n3 Missing Data Mechanisms:\n\nMCAR — unrelated to data. Complete case analysis is valid.\nMAR — related to observed variables. Use imputation.\nMNAR — related to the missing values themselves. Hardest to handle.\n\n3 Ways to deal with missingness:\n\nDrop (complete case) — easy but loses data; biased if not MCAR\nCreate a “missing” category — useful when NA is meaningful\nImpute — single imputation underestimates uncertainty; multiple imputation (mice package) preferred\n\nnaniar::vis_miss(df)           # visual map of NAs\nnaniar::miss_var_summary(df)   # table by variable\nggplot(df, aes(x = is.na(Ozone), y = Solar.R)) + geom_boxplot()",
+    "crumbs": [
+      "Pre-Class Learnings",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Pre-Class Learnings</span>"
+    ]
+  },
+  {
+    "objectID": "pcl/pcl.html#functions",
+    "href": "pcl/pcl.html#functions",
+    "title": "Pre-Class Learnings",
+    "section": "9 Functions",
+    "text": "9 Functions\nTo prepare: Read Chapter 25 in D4DS, Section 13.1 in R Programming for Data Science. Complete Moodle checkpoint.\nData Story Critique: How Much We Ate — FlowingData\n\nWhat is the data story? US food consumption per capita trends by category over decades.\nWhat is effective? Stacked area shows category trends and overall growth simultaneously.\nWhat could be improved? Categories are too broad — more granular breakdowns would reveal nuance.\n\n\nMy Notes\nIf you’ve copy-pasted code 3+ times → write a function.\nfunction_name &lt;- function(input1, input2 = default) {\n  # body\n  return(output)\n}\nScope: objects created inside a function aren’t accessible outside unless returned.\nEmbrace { } for tidyverse functions:\ngroup_means &lt;- function(df, group_var, mean_var) {\n  df |&gt;\n    group_by({{ group_var }}) |&gt;\n    summarize(mean = mean({{ mean_var }}))\n}\nif-else:\nif (condition) { } else if (other) { } else { }\nNote: if() is not vectorized — use if_else() or case_when() inside mutate().",
+    "crumbs": [
+      "Pre-Class Learnings",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Pre-Class Learnings</span>"
+    ]
+  },
+  {
+    "objectID": "pcl/pcl.html#base-r",
+    "href": "pcl/pcl.html#base-r",
+    "title": "Pre-Class Learnings",
+    "section": "10 Base R",
+    "text": "10 Base R\nTo prepare: Read Chapter 27 in D4DS. Complete Moodle checkpoint.\nData Story Critique: NYT Carbon Budget\n\nWhat is the data story? How fast humanity is burning through its carbon budget to stay within temperature targets.\nWhat is effective? The “budget” metaphor is instantly intuitive. Scrollytelling creates urgency.\nWhat could be improved? No counterfactual scenarios — showing what policies would “buy” would help.\n\n\nMy Notes\nSubsetting with [:\nx[c(1, 3)]      # by position\nx[-1]            # drop first\nx[x &gt; 5]        # by logical\nx[\"name\"]        # by name\nm[1, ]           # matrix first row\nm[, 2]           # matrix second column\nSingle element extraction: df$mpg, df[[\"mpg\"]], df |&gt; pull(mpg)\nstr() — shows structure of any object. Dollar signs = extractable named components.",
+    "crumbs": [
+      "Pre-Class Learnings",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Pre-Class Learnings</span>"
+    ]
+  },
+  {
+    "objectID": "pcl/pcl.html#loops-iteration-i",
+    "href": "pcl/pcl.html#loops-iteration-i",
+    "title": "Pre-Class Learnings",
+    "section": "11 Loops + Iteration I",
+    "text": "11 Loops + Iteration I\nTo prepare: Read Chapter 26 in D4DS. Complete Moodle checkpoint.\nData Story Critique: NZ Election 2020 — Stuff\n\nWhat is the data story? NZ 2020 election — Labour’s historic win and political landscape shift.\nWhat is effective? Maps, bar charts, and time series give a comprehensive view.\nWhat could be improved? Very dense — a “key findings” section at the top would orient readers.\n\n\nMy Notes\nAlways pre-allocate storage:\noutput &lt;- vector(\"list\", length = 10)\nfor (i in seq_along(output)) {\n  output[[i]] &lt;- some_function(i)\n}\nUse seq_along(v) (safe with length-0 vectors), seq_len(nrow(df)) for row iteration.\nacross() for column-wise operations:\ndiamonds |&gt;\n  mutate(across(c(carat, x, y, z), function(x) round(x, 1)))\n\ndiamonds |&gt;\n  group_by(cut) |&gt;\n  summarize(across(where(is.numeric), list(mean = mean, sd = sd)))",
+    "crumbs": [
+      "Pre-Class Learnings",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Pre-Class Learnings</span>"
+    ]
+  },
+  {
+    "objectID": "pcl/pcl.html#loops-iteration-ii",
+    "href": "pcl/pcl.html#loops-iteration-ii",
+    "title": "Pre-Class Learnings",
+    "section": "12 Loops + Iteration II",
+    "text": "12 Loops + Iteration II\nTo prepare: Read the “Learn to purrr” tutorial. Complete Moodle checkpoint.\nData Story Critique: Oxfam Ireland Impact\n\nWhat is the data story? Human impact of Oxfam programs through individual stories and aggregate data.\nWhat is effective? Personal storytelling makes impact feel real.\nWhat could be improved? Visualizations are decorative — rigorous charts would add credibility.\n\n\nMy Notes\n\n\n\nFunction\nReturns\n\n\n\n\nmap()\nlist\n\n\nmap_chr()\ncharacter vector\n\n\nmap_dbl()\nnumeric vector\n\n\nmap_int()\ninteger vector\n\n\nmap_lgl()\nlogical vector\n\n\n\nmap_dbl(diamonds |&gt; select(where(is.numeric)), mean)\npmap(args_df, rnorm)   # iterate over rows\nwalk2(paths, plots, function(p, pl) ggsave(p, pl))  # side effects\nFailing loudly is a feature — use typed map_*() to catch type errors early.",
+    "crumbs": [
+      "Pre-Class Learnings",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Pre-Class Learnings</span>"
+    ]
+  },
+  {
+    "objectID": "pcl/pcl.html#apis-i",
+    "href": "pcl/pcl.html#apis-i",
+    "title": "Pre-Class Learnings",
+    "section": "13 APIs I",
+    "text": "13 APIs I\nTo prepare: Read “A Non-Programmer’s Introduction to JSON,” “Understanding URL,” and the urltools vignette.\nData Story Critique: NYT — Mortgages & Interest Rates\n\nWhat is the data story? How rising interest rates increased monthly costs of mortgages and car loans since 2022.\nWhat is effective? Dollar-amount framing makes abstract rate changes feel personal.\nWhat could be improved? A loan calculator for users’ own amounts would be far more actionable.\n\n\nMy Notes\nJSON syntax: {} = object, [] = array, \"key\": value, strings in double quotes.\nlibrary(jsonlite)\nfromJSON(json_string)\nfromJSON(json_string, simplifyVector = TRUE)  # try for data frame\nURL structure: https://api.example.com/data/2019?key=NAME&for=state:* → scheme + host + path + ? + query parameters (key=value pairs separated by &)",
+    "crumbs": [
+      "Pre-Class Learnings",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Pre-Class Learnings</span>"
+    ]
+  },
+  {
+    "objectID": "pcl/pcl.html#apis-ii",
+    "href": "pcl/pcl.html#apis-ii",
+    "title": "Pre-Class Learnings",
+    "section": "14 APIs II",
+    "text": "14 APIs II\nTo prepare: Read “Getting Started With JSON and jsonlite” and “Fetching JSON data from REST APIs.” Complete Moodle checkpoint.\nData Story Critique: The Pudding — Music Hype\n\nWhat is the data story? Whether Pitchfork critical hype translates to Spotify streaming popularity.\nWhat is effective? The scatter plot immediately reveals the weak correlation — visual does the argument.\nWhat could be improved? Doesn’t account for time — old vs. new albums on the same axes conflates dynamics.\n\n\nMy Notes\nlibrary(httr2)\nreq &lt;- request(\"https://api.census.gov\") |&gt;\n  req_url_path_append(\"data\") |&gt;\n  req_url_query(get = \"NAME\", key = my_key)\n\nresp &lt;- req_perform(req)\ndata &lt;- resp |&gt; resp_body_json(simplifyVector = TRUE)\nNavigate nested lists: resp$key, resp[[\"key\"]], resp[[1]]\nUse str(list) or View(list) to explore structure. XML responses → xml2 package.",
+    "crumbs": [
+      "Pre-Class Learnings",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Pre-Class Learnings</span>"
+    ]
+  },
+  {
+    "objectID": "pcl/pcl.html#web-scraping",
+    "href": "pcl/pcl.html#web-scraping",
+    "title": "Pre-Class Learnings",
+    "section": "15 Web Scraping",
+    "text": "15 Web Scraping\nTo prepare: Read the rvest vignette “Web scraping 101.” Complete Moodle checkpoint.\nData Story Critique: ArcGIS StoryMap Collection\n\nWhat is the data story? Environmental and geographic stories through interactive maps.\nWhat is effective? Map-first approach makes spatial patterns immediately visible.\nWhat could be improved? Navigation between stories is not intuitive.\n\n\nMy Notes\nUse web scraping only when no API is available. Always check robots.txt first.\nCSS selectors: .classname (class), #id (id), a (tag type). Use Selector Gadget Chrome extension to find selectors by clicking.\npage &lt;- read_html(\"https://www.nih.gov/news-events/news-releases\")\n\ntitles &lt;- page |&gt;\n  html_elements(\".thumbnail-teaser__heading\") |&gt;\n  html_text()\n\nlinks &lt;- page |&gt;\n  html_elements(\"a\") |&gt;\n  html_attr(\"href\")\nCombine with map() and bind_rows() to scrape multiple pages.",
+    "crumbs": [
+      "Pre-Class Learnings",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Pre-Class Learnings</span>"
+    ]
+  },
+  {
+    "objectID": "pcl/pcl.html#databases-and-sql",
+    "href": "pcl/pcl.html#databases-and-sql",
+    "title": "Pre-Class Learnings",
+    "section": "16 Databases and SQL",
+    "text": "16 Databases and SQL\nTo prepare: Read Chapter 21 in D4DS. Complete Moodle checkpoint.\nData Story Critique: UNODC Synthetic Drug Strategy\n\nWhat is the data story? Global trends in synthetic drug trafficking and seizures.\nWhat is effective? Maps and charts work together for a clear geographic story.\nWhat could be improved? Some charts lack clear axis labels.\n\n\nMy Notes\ncon &lt;- DBI::dbConnect(duckdb::duckdb())\ndbWriteTable(con, \"flights\", nycflights13::flights)\nflights &lt;- tbl(con, \"flights\")\nflights |&gt; filter(dest == \"IAH\") |&gt; show_query()\n\n\n\ndplyr\nSQL\n\n\n\n\nfilter()\nWHERE\n\n\nselect()\nSELECT\n\n\narrange()\nORDER BY\n\n\ngroup_by() |&gt; summarize()\nGROUP BY + aggregate\n\n\nleft_join()\nLEFT JOIN ... ON\n\n\n\nSQL uses = (not ==), AND/OR (not &/|).",
+    "crumbs": [
+      "Pre-Class Learnings",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Pre-Class Learnings</span>"
+    ]
+  },
+  {
+    "objectID": "pcl/pcl.html#effective-viz",
+    "href": "pcl/pcl.html#effective-viz",
+    "title": "Pre-Class Learnings",
+    "section": "17 Effective Viz",
+    "text": "17 Effective Viz\nTo prepare: Read Brent Dykes’s Data Storytelling article on Forbes. Read Section 4.2 from Mastering Software Dev in R.\nData Story Critique: Africa in 100 Years — The Telegraph\n\nWhat is the data story? Projections of Africa’s demographic shift over the next century.\nWhat is effective? The long time horizon makes the scale of change viscerally clear.\nWhat could be improved? No uncertainty shown — confidence intervals would be more honest.\n\n\nMy Notes\nPresenting a visualization:\n\nMotivation & context — why does this question matter?\nOrientation — walk through axes, legends, what a point means\nHighlights — focus on 1–2 interesting data points and tell the story\nBig picture — overall trends, takeaways, implications\n\n6 guidelines for great plots: high data density, clear labels, useful references, highlight interesting aspects, consider small multiples, make order meaningful. Overarching theme: facilitate comparisons.",
+    "crumbs": [
+      "Pre-Class Learnings",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Pre-Class Learnings</span>"
+    ]
+  },
+  {
+    "objectID": "pcl/pcl.html#interactive-viz",
+    "href": "pcl/pcl.html#interactive-viz",
+    "title": "Pre-Class Learnings",
+    "section": "18 Interactive Viz",
+    "text": "18 Interactive Viz\nTo prepare: Listen to Data Stories Episode 127 (timestamps 18–25:30).\nData Story Critique: SDG Index Dashboard\n\nWhat is the data story? Country-level progress toward UN SDG 4 (Quality Education).\nWhat is effective? Choropleth map makes geographic disparities immediately visible.\nWhat could be improved? Color scale is hard to interpret precisely — a bar chart alongside the map would help.\n\n\nMy Notes\nUse interactivity when it allows users to explore data more quickly or deeply than static visuals.\nShiny structure: ui (layout + inputs + outputs) + server (render functions that listen to inputs) + shinyApp(ui, server)\n# *Input() functions go in sidebarPanel()\nselectInput(inputId = \"city\", label = \"City\", choices = cities)\n\n# *Output() functions go in mainPanel()\nplotOutput(outputId = \"scatter\")\n\n# render*() functions go in server\noutput$scatter &lt;- renderPlot({\n  data |&gt; filter(metro_name == input$city) |&gt;\n    ggplot(aes(x = distmiles, y = entropy)) + geom_point()\n})\nplotly: wrap any ggplot in ggplotly() for hover, zoom, pan. Use frame + ids aesthetics for animations.",
+    "crumbs": [
+      "Pre-Class Learnings",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Pre-Class Learnings</span>"
+    ]
+  },
+  {
+    "objectID": "pcl/pcl.html#quality-control",
+    "href": "pcl/pcl.html#quality-control",
+    "title": "Pre-Class Learnings",
+    "section": "19 Quality Control",
+    "text": "19 Quality Control\nTo prepare: No readings — synthesis lesson.\nData Story Critique: Counting Happiness — FlowingData\n\nWhat is the data story? How happiness is distributed across moments of the day from experience sampling data.\nWhat is effective? Dot-plot style conveys the distribution intuitively.\nWhat could be improved? Self-reported methodology needs more explanation — easy to misread as population averages.\n\n\nMy Notes\nCode Quality: DRY (don’t repeat yourself), readable, meaningful names, test cases, efficient (bench::mark()), reproducible (relative paths), one function = one simple task.\nData Quality: never edit raw data, check for unexpected NAs, use test cases to verify wrangling, when joining — predict row counts and check anti_join(), always visualize your data as a sanity check.",
+    "crumbs": [
+      "Pre-Class Learnings",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>Pre-Class Learnings</span>"
+    ]
   }
 ]
